@@ -1,0 +1,1 @@
+strangerStringsGame.init('myCanvas')
