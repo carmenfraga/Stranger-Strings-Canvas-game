@@ -22,6 +22,7 @@ const strangerStringsGame = {
         this.setEventListeners()
         this.createPlayer()
         this.start()
+        console.log(this.gameSize.h)
     },
 
     setDimensions() {
@@ -34,7 +35,7 @@ const strangerStringsGame = {
     },
 
     setEventListeners() {
-        document.onkeyup = event => {
+        document.onkeydown = event => {
             const { key } = event
             if (key === 'ArrowLeft') {
                 this.player.moveLeft()
@@ -54,12 +55,10 @@ const strangerStringsGame = {
 
     createDemogorgons() {
         this.demogorgons.push(new Demogorgons(this.ctx, this.gameSize))
-        console.log(this.demogorgons)
     },
 
     createPancakes() {
         this.pancakes.push(new Pancakes(this.ctx, this.gameSize))
-
     },
 
     start() {
@@ -73,8 +72,15 @@ const strangerStringsGame = {
             if (this.framesIndex % 100 === 0) {
                 this.createPancakes()
             }
-            this.isCollision()
-            console.log(this.player.bullets)
+            this.demogorgonCollision()
+            this.pancakeCollision()
+            this.healthCounter()
+            this.exitDemogorgon()
+            this.gameOver()
+            console.log(this.player.health)
+
+
+
 
         }, 150)
     },
@@ -89,7 +95,7 @@ const strangerStringsGame = {
         this.pancakes.forEach(eachPancake => eachPancake.draw())
     },
 
-    isCollision() {
+    demogorgonCollision() {
         this.demogorgons.forEach((eachDemogorgon) => {
             this.player.bullets.forEach((eachBullet) => {
 
@@ -100,34 +106,60 @@ const strangerStringsGame = {
                     eachBullet.bulletsPos.y < eachDemogorgon.demogorgonsPos.y + eachDemogorgon.demogorgonsSize.h &&
 
                     eachBullet.radius + eachBullet.bulletsPos.y > eachDemogorgon.demogorgonsPos.y) {
+                    // demogorgon desaparece 
                     const index = this.demogorgons.indexOf(eachDemogorgon)
-
-                    return this.demogorgons.splice(index, 1)
-
+                    this.demogorgons.splice(index, 1)
+                    // bullet desaparece
+                    const bulletIndex = this.player.bullets.indexOf(eachBullet)
+                    this.player.bullets.splice(bulletIndex, 1)
                 } else {
-
-                    // Si no hay colisión --> SUMO PUNTOS SI EL OBSTÁCULO LLEGA AL FINAL DEL CANVAS SIN COLISIONAR
-
-
-
-                    //   if (this.car.carPos.x < eachObstacle.obstaclePos.x + eachObstacle.obstacleSize.w &&
-
-                    //     this.car.carPos.x + this.car.carSize.w > eachObstacle.obstaclePos.x &&
-
-                    //     this.car.carPos.y < eachObstacle.obstaclePos.y + eachObstacle.obstacleSize.h &&
-
-                    //     this.car.carSize.h + this.car.carPos.y > eachObstacle.obstaclePos.y) {
-
-
-
                 }
             })
-
         })
-
     },
 
-    // gameOver() {
-    //     clearInterval(this.interval)
-    // }
+    pancakeCollision() {
+        this.pancakes.forEach((eachPancake) => {
+
+            if (this.player.playerPos.x < eachPancake.pancakesPos.x + eachPancake.pancakesSize.w &&
+
+                this.player.playerPos.x + this.player.playerSize.w > eachPancake.pancakesPos.x &&
+
+                this.player.playerPos.y < eachPancake.pancakesPos.y + eachPancake.pancakesSize.h &&
+
+                this.player.playerSize.h + this.player.playerPos.y > eachPancake.pancakesPos.y) {
+                // pancake desaparece 
+                const index = this.pancakes.indexOf(eachPancake)
+                this.pancakes.splice(index, 1)
+                if (this.player.health < 5) {
+                    this.player.health++
+                }
+            } else {
+            }
+        })
+    },
+
+    healthCounter() {
+        this.demogorgons.forEach((eachDemogorgon) => {
+            if (eachDemogorgon.demogorgonsPos.y >= this.gameSize.h) {
+                this.player.health -= 1
+            }
+        })
+    },
+
+    exitDemogorgon() {
+
+        this.demogorgons.forEach((eachDemogorgon) => {
+            if (eachDemogorgon.demogorgonsPos.y >= this.gameSize.h) {
+                const index = this.demogorgons.indexOf(eachDemogorgon)
+                this.demogorgons.splice(index, 1)
+            }
+        })
+    },
+
+    gameOver() {
+        if (this.player.health === 0) {
+            clearInterval(this.interval)
+        }
+    }
 }
