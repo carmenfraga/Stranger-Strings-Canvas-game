@@ -1,9 +1,9 @@
 class Player {
     constructor(ctx, gameSize) {
         this.ctx = ctx
-        this.playerPos = { x: 600, y: 600 }
-        this.playerSize = { w: 100, h: 100 }
         this.gameSize = gameSize
+        this.playerPos = { x: this.gameSize.w / 2, y: this.gameSize.h - 130 }
+        this.playerSize = { w: 100, h: 100 }
 
         this.imagePlayer1 = undefined
 
@@ -19,6 +19,8 @@ class Player {
 
     draw() {
         this.ctx.drawImage(this.imagePlayer1, this.playerPos.x, this.playerPos.y, this.playerSize.w, this.playerSize.h)
+        this.bullets.forEach(eachBullet => eachBullet.draw())
+        this.clearBullets()
     }
 
     moveLeft() {
@@ -30,6 +32,10 @@ class Player {
     }
 
     shoot() {
-        this.bullets.push
+        this.bullets.push(new Bullets(this.ctx, this.gameSize, this.playerPos.x, this.playerPos.y, this.playerSize.w))
+    }
+
+    clearBullets() {
+        this.bullets = this.bullets.filter(eachBullet => eachBullet.bulletsPos.y >= 0)
     }
 }

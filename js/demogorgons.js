@@ -1,10 +1,10 @@
 class Demogorgons {
     constructor(ctx, gameSize) {
         this.ctx = ctx
-        this.demogorgonsPos = { x: Math.random() * (600 - 20) + 20, y: 0 }
+        this.gameSize = gameSize
+        this.demogorgonsPos = { x: Math.random() * (this.gameSize.w - 20) + 20, y: 0 }
         this.demogorgonsSize = { w: 100, h: 100 }
         this.speed = Math.random() * (20 - 10) + 10
-        this.gameSize = gameSize
 
         this.imageDemogorgon = undefined
 

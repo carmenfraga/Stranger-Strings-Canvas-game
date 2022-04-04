@@ -42,7 +42,7 @@ const strangerStringsGame = {
             if (key === 'ArrowRight') {
                 this.player.moveRight()
             }
-            if (key === 'Shift') {
+            if (key === ' ') {
                 this.player.shoot()
             }
         }
@@ -54,7 +54,7 @@ const strangerStringsGame = {
 
     createDemogorgons() {
         this.demogorgons.push(new Demogorgons(this.ctx, this.gameSize))
-
+        console.log(this.demogorgons)
     },
 
     createPancakes() {
@@ -62,13 +62,8 @@ const strangerStringsGame = {
 
     },
 
-    createBullets() {
-        this.bullets.push(new Bullets(this.ctx, this.gameSize))
-
-    },
-
     start() {
-        setInterval(() => {
+        this.interval = setInterval(() => {
             this.clearAll()
             this.drawAll()
             this.framesIndex++
@@ -78,6 +73,9 @@ const strangerStringsGame = {
             if (this.framesIndex % 100 === 0) {
                 this.createPancakes()
             }
+            this.isCollision()
+            console.log(this.player.bullets)
+
         }, 150)
     },
 
@@ -89,7 +87,47 @@ const strangerStringsGame = {
         this.player.draw()
         this.demogorgons.forEach(eachDemogorgon => eachDemogorgon.draw())
         this.pancakes.forEach(eachPancake => eachPancake.draw())
-        this.bullets.forEach(eachBullet => eachBullet.draw())
+    },
+
+    isCollision() {
+        this.demogorgons.forEach((eachDemogorgon) => {
+            this.player.bullets.forEach((eachBullet) => {
+
+                if (eachBullet.bulletsPos.x < eachDemogorgon.demogorgonsPos.x + eachDemogorgon.demogorgonsSize.w &&
+
+                    eachBullet.bulletsPos.x + eachBullet.radius > eachDemogorgon.demogorgonsPos.x &&
+
+                    eachBullet.bulletsPos.y < eachDemogorgon.demogorgonsPos.y + eachDemogorgon.demogorgonsSize.h &&
+
+                    eachBullet.radius + eachBullet.bulletsPos.y > eachDemogorgon.demogorgonsPos.y) {
+                    const index = this.demogorgons.indexOf(eachDemogorgon)
+
+                    return this.demogorgons.splice(index, 1)
+
+                } else {
+
+                    // Si no hay colisión --> SUMO PUNTOS SI EL OBSTÁCULO LLEGA AL FINAL DEL CANVAS SIN COLISIONAR
+
+
+
+                    //   if (this.car.carPos.x < eachObstacle.obstaclePos.x + eachObstacle.obstacleSize.w &&
+
+                    //     this.car.carPos.x + this.car.carSize.w > eachObstacle.obstaclePos.x &&
+
+                    //     this.car.carPos.y < eachObstacle.obstaclePos.y + eachObstacle.obstacleSize.h &&
+
+                    //     this.car.carSize.h + this.car.carPos.y > eachObstacle.obstaclePos.y) {
+
+
+
+                }
+            })
+
+        })
 
     },
+
+    // gameOver() {
+    //     clearInterval(this.interval)
+    // }
 }
