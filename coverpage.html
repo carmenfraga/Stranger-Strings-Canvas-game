@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stranger Strings</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<script>
+    let totalTime = 5
+    function updateClock() {
+        document.getElementById('start').innerHTML = totalTime
+        if (totalTime == 0) {
+            window.location.href = "index.html"
+        } else {
+            totalTime -= 1
+            setTimeout(updateClock(), 1000)
+        }
+    }
+</script>
+
+<body>
+    <div class="game-intro">
+        <img src="./images/logo.png" alt="" class="logo-img" />
+        <br />
+        <button>
+            <a href="../index.html" title="Mi enlace">Start Game</a>
+        </button>
+        <p>Use the left and right arrow to control the player! Shoot using de space button</p>
+        <img src="./images/arrows.png" alt="" class="arrows-img" />
+    </div>
+
+</body>
+
+</html>

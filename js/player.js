@@ -2,8 +2,8 @@ class Player {
     constructor(ctx, gameSize) {
         this.ctx = ctx
         this.gameSize = gameSize
-        this.playerPos = { x: this.gameSize.w / 2, y: this.gameSize.h - 130 }
-        this.playerSize = { w: 100, h: 100 }
+        this.playerSize = { w: 150, h: 150 }
+        this.playerPos = { x: this.gameSize.w / 2 - 80, y: this.gameSize.h - 150 }
         this.health = 5
         this.imagePlayer1 = undefined
 
@@ -15,7 +15,7 @@ class Player {
 
     init() {
         this.imagePlayer1 = new Image()
-        this.imagePlayer1.src = 'img/player1.png'
+        this.imagePlayer1.src = 'img/player11.png'
         //this.healthCounter()
     }
 
@@ -26,17 +26,17 @@ class Player {
     }
 
     moveLeft() {
-        // if (this.playerPos.x = 0 + this.playerSize.w) {
-        //     this.playerPos.x = this.playerSize.w
-        // } else {
-        this.playerPos.x -= 50
+        if (this.playerPos.x > 0) {
+            this.playerPos.x -= 50
+        } else {
+        }
     }
 
     moveRight() {
-        // if (this.playerPos.x >= this.gameSize.w - this.playerSize.w) {
-        //     // this.playerPos.x = this.gameSize.w - this.playerSize.w
-        // } else {
-        this.playerPos.x += 50
+        if (this.playerPos.x < this.gameSize.w - this.playerSize.w) {
+            this.playerPos.x += 50
+        } else {
+        }
     }
 
 

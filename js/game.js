@@ -1,3 +1,13 @@
+window.onload = () => {
+    document.getElementById('start-button').onclick = () => {
+        startGame()
+    },
+
+        function startGame() {
+            strangerStringsGame.init('myCanvas')
+        }
+}
+
 const strangerStringsGame = {
     name: 'Stranger Strings Game',
     description: 'Stranger Strings Canvas game',
@@ -8,7 +18,9 @@ const strangerStringsGame = {
     ctx: undefined,
     gameSize: { w: undefined, h: undefined },
 
+    score: 0,
     player: undefined,
+    lives: undefined,
     demogorgons: [],
     pancakes: [],
     framesIndex: 0,
@@ -17,10 +29,12 @@ const strangerStringsGame = {
         this.canvasNode = document.querySelector(`#${myCanvasID}`)
         this.ctx = this.canvasNode.getContext('2d')
         console.log('EL CONTEXTO:', this.ctx)
-
+        this.imageGameOver = new Image()
+        this.imageGameOver.src = 'img/gameover.png'
         this.setDimensions()
         this.setEventListeners()
         this.createPlayer()
+        this.createLives()
         this.start()
         console.log(this.gameSize.h)
     },
@@ -61,6 +75,27 @@ const strangerStringsGame = {
         this.pancakes.push(new Pancakes(this.ctx, this.gameSize))
     },
 
+    createLives() {
+        if (this.player.health === 5) {
+            this.lives = new Lives(this.ctx, this.gameSize, 'img/hearts5.png')
+        }
+        if (this.player.health === 4) {
+            this.lives.imageLives.src = 'img/hearts4.png'
+        }
+        if (this.player.health === 3) {
+            this.lives.imageLives.src = 'img/hearts3.png'
+        }
+        if (this.player.health === 2) {
+            this.lives.imageLives.src = 'img/hearts2.png'
+        }
+        if (this.player.health === 1) {
+            this.lives.imageLives.src = 'img/hearts1.png'
+        }
+        if (this.player.health === 0) {
+            this.lives.imageLives.src = 'img/hearts0.png'
+        }
+    },
+
     start() {
         this.interval = setInterval(() => {
             this.clearAll()
@@ -76,11 +111,11 @@ const strangerStringsGame = {
             this.pancakeCollision()
             this.healthCounter()
             this.exitDemogorgon()
+            this.drawScore()
+            this.createLives()
+            this.lives.draw()
             this.gameOver()
             console.log(this.player.health)
-
-
-
 
         }, 150)
     },
@@ -112,6 +147,8 @@ const strangerStringsGame = {
                     // bullet desaparece
                     const bulletIndex = this.player.bullets.indexOf(eachBullet)
                     this.player.bullets.splice(bulletIndex, 1)
+                    // suma score al matar demogorgon
+                    this.score++
                 } else {
                 }
             })
@@ -157,9 +194,29 @@ const strangerStringsGame = {
         })
     },
 
+    drawScore() {
+        this.ctx.font = '25px Arial'
+        this.ctx.fillStyle = 'black'
+        this.ctx.fillText(`Score: ${this.score}`, 40, 40)
+    },
+
     gameOver() {
         if (this.player.health === 0) {
+            this.drawGameOver()
             clearInterval(this.interval)
         }
-    }
+    },
+
+    drawGameOver() {
+        this.ctx.drawImage(this.imageGameOver, this.gameSize.w / 2 - 260, this.gameSize.h / 2 - 250, 500, 500)
+    },
+
+    // startGame() {
+    //     let startDiv = document.getElementById("start-game")
+    //     let gameCanvas = document.getElementById("myCanvas")
+    //     startDiv.style.display = "none"
+    //     gameCanvas.style.display = "block"
+    //     this.start()
+
+    // }
 }

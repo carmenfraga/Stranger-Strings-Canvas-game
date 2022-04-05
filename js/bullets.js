@@ -1,11 +1,12 @@
 class Bullets {
-    constructor(ctx, gameSize, playerPosX, playerPosY, playerSizeW) {
+    constructor(ctx, gameSize, playerPosX, playerPosY) {
         this.ctx = ctx
         this.gameSize = gameSize
         this.bulletsPos = {
-            x: playerPosX + playerSizeW,
-            y: playerPosY + 10
+            x: playerPosX + 77,
+            y: playerPosY
         }
+        this.bulletsSize = { w: 5, h: 15 }
         this.speed = 30
         this.radius = 10
 
@@ -17,11 +18,8 @@ class Bullets {
     }
 
     draw() {
-        this.ctx.beginPath()
-        this.ctx.fillStyle = "black"
-        this.ctx.arc(this.bulletsPos.x, this.bulletsPos.y, this.radius, 0, Math.PI * 2)
-        this.ctx.fill()
-        this.ctx.closePath()
+        this.ctx.fillStyle = "red"
+        this.ctx.fillRect(this.bulletsPos.x, this.bulletsPos.y, this.bulletsSize.w, this.bulletsSize.h)
         this.move()
     }
 

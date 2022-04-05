@@ -3,6 +3,40 @@
     padding: 0;
 }
 
+
 #myCanvas {
     background-color: orange
+}
+
+#start-button {
+    font-family: Arial, Helvetica, sans-serif;
+    color: red;
+    padding: 20px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -100px;
+    margin-left: -100px;
+    height: 200px;
+    width: 250px;
+    text-align: center;
+}
+
+#start-button a {
+    border: 3px solid red;
+    color: black;
+    text-decoration: none;
+    padding: 10px;
+    border-radius: 15px;
+    cursor: pointer;
+    display: block;
+    width: 100px;
+    text-align: center;
+    font-size: 2em;
+    display: inline-block;
+}
+
+#start-button a:hover {
+    background-color: red;
+    color: black;
 }

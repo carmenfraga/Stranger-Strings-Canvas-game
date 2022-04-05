@@ -1,19 +1,20 @@
 class Lives {
-    constructor(ctx, gameSize) {
+    constructor(ctx, gameSize, imageLives) {
         this.ctx = ctx
         this.gameSize = gameSize
-        this.livesPos = { x: 100, y: 100 }
-        this.livesSize = { w: 50, h: 50 }
+        this.livesPos = { x: 30, y: 20 }
+        this.livesSize = { w: 210, h: 100 }
+        this.imageLives = imageLives
 
         this.init()
     }
 
     init() {
         this.imageLives = new Image()
-        this.imageLives.src = 'img/Pink-Heart-Vector-PNG-File.png'
+        this.imageLives.src = 'img/hearts5.png'
     }
 
     draw() {
-        this.ctx.drawImage(this.imageLives, this.LivesPos.x, this.LivesPos.y, this.LivesSize.w, this.LivesSize.h)
+        this.ctx.drawImage(this.imageLives, this.livesPos.x, this.livesPos.y, this.livesSize.w, this.livesSize.h)
     }
 }
