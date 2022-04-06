@@ -3,11 +3,20 @@ window.onload = () => {
     const startGameDOM = document.querySelector('#start-game')
     const buttonStart = startGameDOM.querySelector('#start-button')
 
+    const playerDOM = document.createElement('.playerImg')
+    image.src = 'img/player2.png'
+    document.querySelector('#start-game').appendChild(playerDOM)
+
+    buttonPlayer.addEventListener("click", function () {
+        this.choosePlayer()
+    })
+
 
     buttonStart.addEventListener("click", function () {
         startGameDOM.classList.add("hide")
         strangerStringsGame.init('myCanvas')
     })
+
 
 }
 
@@ -22,11 +31,13 @@ const strangerStringsGame = {
     gameSize: { w: undefined, h: undefined },
 
     score: 0,
+    level: 1,
     player: undefined,
     lives: undefined,
     demogorgons: [],
     pancakes: [],
     framesIndex: 0,
+
 
     init(myCanvasID) {
         this.canvasNode = document.querySelector(`#${myCanvasID}`)
@@ -39,7 +50,6 @@ const strangerStringsGame = {
         this.createPlayer()
         this.createLives()
         this.start()
-        console.log(this.gameSize.h)
     },
 
     setDimensions() {
@@ -100,28 +110,59 @@ const strangerStringsGame = {
     },
 
     start() {
-        // this.reset()
         this.interval = setInterval(() => {
             this.clearAll()
             this.drawAll()
             this.framesIndex++
-            if (this.framesIndex % 20 === 0) {
-                this.createDemogorgons()
+            if (this.framesIndex < 300) {
+
+                if (this.framesIndex % 20 === 0) {
+                    this.createDemogorgons()
+                    //this.level = 1
+                }
+
             }
-            if (this.framesIndex % 100 === 0) {
-                this.createPancakes()
+
+            if (this.framesIndex >= 300) {
+                if (this.framesIndex % 10 === 0) {
+                    this.createDemogorgons()
+                    this.level = 2
+                }
+            }
+
+            if (this.framesIndex > 600) {
+                if (this.framesIndex % 5 === 0) {
+                    this.createDemogorgons()
+                    this.level = 3
+                }
+            }
+            console.log(this.framesIndex)
+            if (this.framesIndex <= 600) {
+
+                if (this.framesIndex % 100 === 0) {
+                    this.createPancakes()
+                }
+            }
+            if (this.framesIndex > 600) {
+
+                if (this.framesIndex % 80 === 0) {
+                    this.createPancakes()
+                }
             }
             this.demogorgonCollision()
             this.pancakeCollision()
             this.healthCounter()
             this.exitDemogorgon()
             this.drawScore()
+            this.drawLevel()
             this.createLives()
             this.lives.draw()
             this.gameOver()
-            console.log(this.player.health)
 
         }, 150)
+        //Theme song
+        let themeSong = new Audio("./sounds/Themesong.mp3")
+        themeSong.play()
     },
 
     reset() {
@@ -144,6 +185,13 @@ const strangerStringsGame = {
         this.pancakes.forEach(eachPancake => eachPancake.draw())
     },
 
+    drawLevel() {
+        this.ctx.font = '25px Arial'
+        this.ctx.fillStyle = 'black'
+        this.ctx.fillText(`Level: ${this.level}`, 40, 120)
+
+    },
+
     demogorgonCollision() {
         this.demogorgons.forEach((eachDemogorgon) => {
             this.player.bullets.forEach((eachBullet) => {
@@ -163,6 +211,9 @@ const strangerStringsGame = {
                     this.player.bullets.splice(bulletIndex, 1)
                     // suma score al matar demogorgon
                     this.score++
+                    //kill demogorgon sound
+                    let killDemogorgonSound = new Audio("./sounds/hitdemogorgon.wav")
+                    killDemogorgonSound.play()
                 } else {
                 }
             })
@@ -185,6 +236,9 @@ const strangerStringsGame = {
                 if (this.player.health < 5) {
                     this.player.health++
                 }
+                //Take pancake sound
+                let takePancakeSound = new Audio("./sounds/pancake.wav")
+                takePancakeSound.play()
             } else {
             }
         })
@@ -216,10 +270,12 @@ const strangerStringsGame = {
 
     gameOver() {
         if (this.player.health === 0) {
+            //Game over sound
+            let gameOverSound = new Audio("./sounds/gameover.wav")
+            gameOverSound.play()
 
-            // this.demogorgons = []
-            // this.framesIndex = 0
             this.reset()
+
 
             clearInterval(this.interval)
 

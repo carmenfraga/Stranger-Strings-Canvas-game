@@ -5,6 +5,7 @@ class Player {
         this.playerSize = { w: 150, h: 150 }
         this.playerPos = { x: this.gameSize.w / 2 - 80, y: this.gameSize.h - 150 }
         this.health = 5
+        //this.speed = 25
         this.imagePlayer1 = undefined
 
 
@@ -26,14 +27,14 @@ class Player {
 
     moveLeft() {
         if (this.playerPos.x > 0) {
-            this.playerPos.x -= 50
+            this.playerPos.x -= 40
         } else {
         }
     }
 
     moveRight() {
         if (this.playerPos.x < this.gameSize.w - this.playerSize.w) {
-            this.playerPos.x += 50
+            this.playerPos.x += 40
         } else {
         }
     }
@@ -41,6 +42,9 @@ class Player {
 
     shoot() {
         this.bullets.push(new Bullets(this.ctx, this.gameSize, this.playerPos.x, this.playerPos.y, this.playerSize.w))
+        //Shoot sound
+        let shootSound = new Audio("./sounds/shoot.wav")
+        shootSound.play()
     }
 
     clearBullets() {
