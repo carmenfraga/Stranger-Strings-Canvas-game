@@ -16,7 +16,6 @@ class Player {
     init() {
         this.imagePlayer1 = new Image()
         this.imagePlayer1.src = 'img/player11.png'
-        //this.healthCounter()
     }
 
     draw() {

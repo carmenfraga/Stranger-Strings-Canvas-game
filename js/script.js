@@ -1,1 +1,1 @@
-strangerStringsGame.init('myCanvas')
+// strangerStringsGame.init('myCanvas')

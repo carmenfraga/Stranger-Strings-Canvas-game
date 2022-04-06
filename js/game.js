@@ -1,11 +1,14 @@
 window.onload = () => {
-    document.getElementById('start-button').onclick = () => {
-        startGame()
-    },
 
-        function startGame() {
-            strangerStringsGame.init('myCanvas')
-        }
+    const startGameDOM = document.querySelector('#start-game')
+    const buttonStart = startGameDOM.querySelector('#start-button')
+
+
+    buttonStart.addEventListener("click", function () {
+        startGameDOM.classList.add("hide")
+        strangerStringsGame.init('myCanvas')
+    })
+
 }
 
 const strangerStringsGame = {
@@ -97,11 +100,12 @@ const strangerStringsGame = {
     },
 
     start() {
+        // this.reset()
         this.interval = setInterval(() => {
             this.clearAll()
             this.drawAll()
             this.framesIndex++
-            if (this.framesIndex % 30 === 0) {
+            if (this.framesIndex % 20 === 0) {
                 this.createDemogorgons()
             }
             if (this.framesIndex % 100 === 0) {
@@ -118,6 +122,16 @@ const strangerStringsGame = {
             console.log(this.player.health)
 
         }, 150)
+    },
+
+    reset() {
+        //this.background = new Background()
+        this.player = new Player(this.ctx, this.gameSize)
+        this.lives = new Lives(this.ctx, this.gameSize, this.imageLives)
+        this.demogorgons = []
+        this.pancakes = []
+        this.score = 0
+        this.framesIndex = 0
     },
 
     clearAll() {
@@ -202,21 +216,35 @@ const strangerStringsGame = {
 
     gameOver() {
         if (this.player.health === 0) {
-            this.drawGameOver()
+
+            // this.demogorgons = []
+            // this.framesIndex = 0
+            this.reset()
+
             clearInterval(this.interval)
+
+
+
+            //Canvas se oculte
+            const myCanvasDOM = document.querySelector('#myCanvas')
+            myCanvasDOM.classList.add("hide")
+
+            const startAgainDOM = document.querySelector('#start-again')
+            const buttonStartAgain = startAgainDOM.querySelector('#start-again-button')
+
+            startAgainDOM.classList.remove("hide")
+
+
+            buttonStartAgain.addEventListener("click", function () {
+                //Canvas se muestre porque está oculto
+                console.log('FUNCIONOOOOO')
+                startAgainDOM.classList.add("hide")
+                myCanvasDOM.classList.remove("hide")
+                strangerStringsGame.init('myCanvas')
+            })
+
+
         }
     },
 
-    drawGameOver() {
-        this.ctx.drawImage(this.imageGameOver, this.gameSize.w / 2 - 260, this.gameSize.h / 2 - 250, 500, 500)
-    },
-
-    // startGame() {
-    //     let startDiv = document.getElementById("start-game")
-    //     let gameCanvas = document.getElementById("myCanvas")
-    //     startDiv.style.display = "none"
-    //     gameCanvas.style.display = "block"
-    //     this.start()
-
-    // }
 }
