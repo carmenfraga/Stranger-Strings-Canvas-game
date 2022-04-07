@@ -4,7 +4,8 @@
 }
 
 img {
-    width: 100px;
+    width: 130px;
+    cursor: pointer;
 }
 
 #start-game.hide {
@@ -17,11 +18,13 @@ img {
     left: 0;
     width: 100%;
     height: 100%;
-    background: red;
     z-index: 10;
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
+    background-image: url("../img/bg-start-game.png");
+    background-size: 100%;
+    padding-top: 190px;
 }
 
 #myCanvas.hide {
@@ -35,23 +38,9 @@ img {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: orange;
+    background-image: url("../img/background-game.png");
+    background-size: 100%;
     z-index: 5;
-}
-
-#start-button {
-    font-family: Arial, Helvetica, sans-serif;
-    color: red;
-    padding: 20px;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    margin-top: -100px;
-    margin-left: -100px;
-    height: 200px;
-    width: 250px;
-    text-align: center;
-    cursor: pointer
 }
 
 
@@ -70,9 +59,26 @@ img {
     display: flex;
     align-items: center;
     justify-content: center;
+    background-image: url("../img/background-start-again.png");
+    background-size: 100%;
 }
 
 #start-again-button {
+    font-family: Arial, Helvetica, sans-serif;
+    color: #DC3732;
+    padding: 20px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -100px;
+    height: 200px;
+    width: 250px;
     text-align: center;
-    cursor: pointer
+    cursor: pointer;
+}
+
+#score {
+    color: #DC3732;
+    display: flex;
+    margin-right: 200px;
 }

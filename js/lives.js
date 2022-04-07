@@ -2,7 +2,7 @@ class Lives {
     constructor(ctx, gameSize, imageLives) {
         this.ctx = ctx
         this.gameSize = gameSize
-        this.livesPos = { x: 30, y: 20 }
+        this.livesPos = { x: 30, y: 0 }
         this.livesSize = { w: 210, h: 100 }
         this.imageLives = imageLives
 

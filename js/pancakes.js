@@ -13,7 +13,7 @@ class Pancakes {
 
     init() {
         this.imagePancake = new Image()
-        this.imagePancake.src = 'img/pancake1.png'
+        this.imagePancake.src = 'img/eggo.png'
     }
 
     draw() {

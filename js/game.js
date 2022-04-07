@@ -1,22 +1,19 @@
 window.onload = () => {
 
     const startGameDOM = document.querySelector('#start-game')
-    const buttonStart = startGameDOM.querySelector('#start-button')
-
-    const playerDOM = document.createElement('.playerImg')
-    image.src = 'img/player2.png'
-    document.querySelector('#start-game').appendChild(playerDOM)
-
-    buttonPlayer.addEventListener("click", function () {
-        this.choosePlayer()
-    })
+    const myCanvasDOM = document.querySelector('#myCanvas')
 
 
-    buttonStart.addEventListener("click", function () {
-        startGameDOM.classList.add("hide")
-        strangerStringsGame.init('myCanvas')
-    })
+    const playerImages = document.querySelectorAll('.playerImg')
+    Array.from(playerImages).forEach(function (img) {
+        img.addEventListener("click", function (e) {
+            const imgSrc = e.target.getAttribute('src')
+            startGameDOM.classList.add("hide")
+            strangerStringsGame.init('myCanvas', imgSrc)
+            myCanvasDOM.classList.remove("hide")
 
+        })
+    });
 
 }
 
@@ -39,10 +36,11 @@ const strangerStringsGame = {
     framesIndex: 0,
 
 
-    init(myCanvasID) {
+    init(myCanvasID, playerImage) {
         this.canvasNode = document.querySelector(`#${myCanvasID}`)
         this.ctx = this.canvasNode.getContext('2d')
         console.log('EL CONTEXTO:', this.ctx)
+        this.playerImage = playerImage
         this.imageGameOver = new Image()
         this.imageGameOver.src = 'img/gameover.png'
         this.setDimensions()
@@ -77,7 +75,7 @@ const strangerStringsGame = {
     },
 
     createPlayer() {
-        this.player = new Player(this.ctx, this.gameSize)
+        this.player = new Player(this.ctx, this.gameSize, this.playerImage)
     },
 
     createDemogorgons() {
@@ -186,9 +184,9 @@ const strangerStringsGame = {
     },
 
     drawLevel() {
-        this.ctx.font = '25px Arial'
-        this.ctx.fillStyle = 'black'
-        this.ctx.fillText(`Level: ${this.level}`, 40, 120)
+        this.ctx.font = 'bold 25px Arial'
+        this.ctx.fillStyle = '#DC3732'
+        this.ctx.fillText(`Level: ${this.level}`, 40, 100)
 
     },
 
@@ -248,6 +246,9 @@ const strangerStringsGame = {
         this.demogorgons.forEach((eachDemogorgon) => {
             if (eachDemogorgon.demogorgonsPos.y >= this.gameSize.h) {
                 this.player.health -= 1
+                //Lost life sound
+                let lostLifeSound = new Audio("./sounds/lostlife.wav")
+                lostLifeSound.play()
             }
         })
     },
@@ -263,9 +264,9 @@ const strangerStringsGame = {
     },
 
     drawScore() {
-        this.ctx.font = '25px Arial'
-        this.ctx.fillStyle = 'black'
-        this.ctx.fillText(`Score: ${this.score}`, 40, 40)
+        this.ctx.font = 'bold 25px Arial'
+        this.ctx.fillStyle = '#DC3732'
+        this.ctx.fillText(`Score: ${this.score}`, 40, 140)
     },
 
     gameOver() {
@@ -274,31 +275,36 @@ const strangerStringsGame = {
             let gameOverSound = new Audio("./sounds/gameover.wav")
             gameOverSound.play()
 
-            this.reset()
 
 
             clearInterval(this.interval)
 
 
 
-            //Canvas se oculte
+            //myCanvas se oculte y aparezca start-again
             const myCanvasDOM = document.querySelector('#myCanvas')
             myCanvasDOM.classList.add("hide")
+
+            const startGameDOM = document.querySelector('#start-game')
+
 
             const startAgainDOM = document.querySelector('#start-again')
             const buttonStartAgain = startAgainDOM.querySelector('#start-again-button')
 
+            const finalScore = document.getElementById('score')
+            finalScore.innerHTML = `Score: ${this.score}`
+
             startAgainDOM.classList.remove("hide")
 
-
+            //Al click, se oculte start-again y aparezca start-game
             buttonStartAgain.addEventListener("click", function () {
-                //Canvas se muestre porque está oculto
                 console.log('FUNCIONOOOOO')
+
                 startAgainDOM.classList.add("hide")
-                myCanvasDOM.classList.remove("hide")
-                strangerStringsGame.init('myCanvas')
+                startGameDOM.classList.remove("hide")
             })
 
+            this.reset()
 
         }
     },
