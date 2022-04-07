@@ -13,7 +13,7 @@ class Demogorgons {
 
     init() {
         this.imageDemogorgon = new Image()
-        this.imageDemogorgon.src = 'img/demogorgon1.png'
+        this.imageDemogorgon.src = 'img/demogorgon.png'
     }
 
     draw() {
