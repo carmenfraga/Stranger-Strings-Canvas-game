@@ -3,7 +3,6 @@ window.onload = () => {
     const startGameDOM = document.querySelector('#start-game')
     const myCanvasDOM = document.querySelector('#myCanvas')
 
-
     const playerImages = document.querySelectorAll('.playerImg')
     Array.from(playerImages).forEach(function (img) {
         img.addEventListener("click", function (e) {
@@ -14,7 +13,6 @@ window.onload = () => {
 
         })
     });
-
 }
 
 const strangerStringsGame = {
@@ -33,8 +31,8 @@ const strangerStringsGame = {
     lives: undefined,
     demogorgons: [],
     pancakes: [],
+    megalife: [],
     framesIndex: 0,
-
 
     init(myCanvasID, playerImage) {
         this.canvasNode = document.querySelector(`#${myCanvasID}`)
@@ -86,6 +84,10 @@ const strangerStringsGame = {
         this.pancakes.push(new Pancakes(this.ctx, this.gameSize))
     },
 
+    createMegalife() {
+        this.megalife.push(new Megalife(this.ctx, this.gameSize))
+    },
+
     createLives() {
         if (this.player.health === 5) {
             this.lives = new Lives(this.ctx, this.gameSize, 'img/hearts5.png')
@@ -112,43 +114,57 @@ const strangerStringsGame = {
             this.clearAll()
             this.drawAll()
             this.framesIndex++
+            // demogorgon 
             if (this.framesIndex < 300) {
-
                 if (this.framesIndex % 20 === 0) {
                     this.createDemogorgons()
                     //this.level = 1
                 }
-
             }
-
             if (this.framesIndex >= 300) {
                 if (this.framesIndex % 10 === 0) {
                     this.createDemogorgons()
                     this.level = 2
                 }
             }
-
             if (this.framesIndex > 600) {
                 if (this.framesIndex % 5 === 0) {
                     this.createDemogorgons()
                     this.level = 3
                 }
             }
-            console.log(this.framesIndex)
-            if (this.framesIndex <= 600) {
 
+            // pancakes 
+            if (this.framesIndex <= 600) {
                 if (this.framesIndex % 100 === 0) {
                     this.createPancakes()
                 }
             }
             if (this.framesIndex > 600) {
-
-                if (this.framesIndex % 80 === 0) {
+                if (this.framesIndex % 70 === 0) {
                     this.createPancakes()
                 }
             }
+
+            // megalife 
+            if (this.framesIndex > 590) {
+
+                if (this.framesIndex % 80 === 0) {
+                    this.createMegalife()
+                }
+            }
+
+            // pop up level 
+            if (this.framesIndex > 300 && this.framesIndex < 315) {
+                this.popUpLevel()
+            }
+            if (this.framesIndex > 600 && this.framesIndex < 615) {
+                this.popUpLevel()
+            }
+
             this.demogorgonCollision()
             this.pancakeCollision()
+            this.megalifeExplosion()
             this.healthCounter()
             this.exitDemogorgon()
             this.drawScore()
@@ -169,6 +185,7 @@ const strangerStringsGame = {
         this.lives = new Lives(this.ctx, this.gameSize, this.imageLives)
         this.demogorgons = []
         this.pancakes = []
+        this.megalife = []
         this.score = 0
         this.framesIndex = 0
     },
@@ -181,6 +198,7 @@ const strangerStringsGame = {
         this.player.draw()
         this.demogorgons.forEach(eachDemogorgon => eachDemogorgon.draw())
         this.pancakes.forEach(eachPancake => eachPancake.draw())
+        this.megalife.forEach(eachMegalife => eachMegalife.draw())
     },
 
     drawLevel() {
@@ -188,6 +206,12 @@ const strangerStringsGame = {
         this.ctx.fillStyle = '#DC3732'
         this.ctx.fillText(`Level: ${this.level}`, 40, 100)
 
+    },
+
+    popUpLevel() {
+        this.ctx.font = 'bold 150px Arial'
+        this.ctx.fillStyle = 'rgba(11, 42, 66, .5)'
+        this.ctx.fillText(`Level: ${this.level}`, 450, 400)
     },
 
     demogorgonCollision() {
@@ -242,6 +266,29 @@ const strangerStringsGame = {
         })
     },
 
+    megalifeExplosion() {
+        this.megalife.forEach((eachMegalife) => {
+
+            if (this.player.playerPos.x < eachMegalife.megalifePos.x + eachMegalife.megalifeSize.w &&
+
+                this.player.playerPos.x + this.player.playerSize.w > eachMegalife.megalifePos.x &&
+
+                this.player.playerPos.y < eachMegalife.megalifePos.y + eachMegalife.megalifeSize.h &&
+
+                this.player.playerSize.h + this.player.playerPos.y > eachMegalife.megalifePos.y) {
+                // megalife desaparece 
+                const index = this.megalife.indexOf(eachMegalife)
+                this.megalife.splice(index, 1)
+                this.demogorgons = []
+
+                //Take megalife sound
+                let takeMegalifeSound = new Audio("./sounds/explosion.wav")
+                takeMegalifeSound.play()
+            } else {
+            }
+        })
+    },
+
     healthCounter() {
         this.demogorgons.forEach((eachDemogorgon) => {
             if (eachDemogorgon.demogorgonsPos.y >= this.gameSize.h) {
@@ -254,7 +301,6 @@ const strangerStringsGame = {
     },
 
     exitDemogorgon() {
-
         this.demogorgons.forEach((eachDemogorgon) => {
             if (eachDemogorgon.demogorgonsPos.y >= this.gameSize.h) {
                 const index = this.demogorgons.indexOf(eachDemogorgon)
@@ -275,18 +321,13 @@ const strangerStringsGame = {
             let gameOverSound = new Audio("./sounds/gameover.wav")
             gameOverSound.play()
 
-
-
             clearInterval(this.interval)
-
-
 
             //myCanvas se oculte y aparezca start-again
             const myCanvasDOM = document.querySelector('#myCanvas')
             myCanvasDOM.classList.add("hide")
 
             const startGameDOM = document.querySelector('#start-game')
-
 
             const startAgainDOM = document.querySelector('#start-again')
             const buttonStartAgain = startAgainDOM.querySelector('#start-again-button')
@@ -305,7 +346,6 @@ const strangerStringsGame = {
             })
 
             this.reset()
-
         }
     },
 
