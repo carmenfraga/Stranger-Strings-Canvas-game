@@ -156,10 +156,10 @@ const strangerStringsGame = {
 
             // pop up level 
             if (this.framesIndex > 300 && this.framesIndex < 315) {
-                this.popUpLevel()
+                this.popUpLevel2()
             }
-            if (this.framesIndex > 600 && this.framesIndex < 615) {
-                this.popUpLevel()
+            if (this.framesIndex > 601 && this.framesIndex < 615) {
+                this.popUpLevel3()
             }
 
             this.demogorgonCollision()
@@ -172,6 +172,7 @@ const strangerStringsGame = {
             this.createLives()
             this.lives.draw()
             this.gameOver()
+            console.log(this.framesIndex)
 
         }, 150)
         //Theme song
@@ -208,10 +209,16 @@ const strangerStringsGame = {
 
     },
 
-    popUpLevel() {
+    popUpLevel2() {
         this.ctx.font = 'bold 150px Arial'
         this.ctx.fillStyle = 'rgba(11, 42, 66, .5)'
-        this.ctx.fillText(`Level: ${this.level}`, 450, 400)
+        this.ctx.fillText(`Level: 2`, 450, 400)
+    },
+
+    popUpLevel3() {
+        this.ctx.font = 'bold 150px Arial'
+        this.ctx.fillStyle = 'rgba(11, 42, 66, .5)'
+        this.ctx.fillText(`Level: 3`, 450, 400)
     },
 
     demogorgonCollision() {
