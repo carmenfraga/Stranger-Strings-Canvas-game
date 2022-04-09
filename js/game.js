@@ -114,7 +114,7 @@ const strangerStringsGame = {
             this.clearAll()
             this.drawAll()
             this.framesIndex++
-            // demogorgon 
+            // demogorgons 
             if (this.framesIndex < 300) {
                 if (this.framesIndex % 20 === 0) {
                     this.createDemogorgons()

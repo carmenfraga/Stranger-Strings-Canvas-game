@@ -22,7 +22,7 @@ img {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-image: url("../img/startbackgroundmac.png");
+    background-image: url("../img/bg-start-beige.png");
     background-size: 100%;
     padding-top: 190px;
 }
@@ -59,7 +59,7 @@ img {
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    background-image: url("../img/backgroundmac.png");
+    background-image: url("../img/bg-end.png");
     background-size: 100%;
 
 }
